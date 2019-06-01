@@ -9,5 +9,5 @@ Overall though, I am quite happy with how it looks and functions. As I start pop
 # GTK Theming
 
 * Papirus-Dark for the icons
-* Paper for the taskbar icons
+* Paper for the tray icons
 * Adapta-Nokto for the overall GTK theme
