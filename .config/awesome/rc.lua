@@ -793,11 +793,14 @@ _G.client.connect_signal(
     local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
  --   awful.spawn("notify-send ".. string.format("%s",icon))
     if icon ~= nil then
-        c.icon = gears.surface(icon)._native
+        local new_icon =gears.surface(icon) 
+        c.icon = new_icon._native
     elseif lower_icon ~= nil then 
-        c.icon = gears.surface(lower_icon)._native
+        local new_icon = gears.surface(lower_icon)
+        c.icon = new_icon._native
     elseif c.icon == nil then
-        c.icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))._native
+        local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+        c.icon = new_icon._native
     end
     --awful.spawn("notify-send ha")
     b = c.fullscreen
@@ -842,11 +845,14 @@ client.connect_signal("manage", function(c)
     local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
  --   awful.spawn("notify-send ".. string.format("%s",icon))
     if icon ~= nil then
-        c.icon = gears.surface(icon)._native
+        local new_icon =gears.surface(icon) 
+        c.icon = new_icon._native
     elseif lower_icon ~= nil then 
-        c.icon = gears.surface(lower_icon)._native
+        local new_icon = gears.surface(lower_icon)
+        c.icon = new_icon._native
     elseif c.icon == nil then
-        c.icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))._native
+        local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+        c.icon = new_icon._native
     end
     if c.floating or c.first_tag.layout.name == "floating" then
         awful.titlebar.show(c)
