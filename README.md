@@ -12,7 +12,7 @@ Overall though, I am quite happy with how it looks and functions. As I start pop
 * Detection for fullscreen applications closing or minimizing (Minecraft comes to mind)
 * Option to be completely keyboard driven and built with default DWM keys in mind.
 * GTK Icons, featuring a default icon for programs that don't provide one.
-* Colored completely with wpgtk because I'm colorblind and cannot design an aesthetically pleasing pallete to match my wallpapers
+* Colored completely with wpgtk because I'm colorblind and cannot design an aesthetically pleasing palette to match my wallpapers
 * Built to work well with keyboard-driven tiling as well as mouse-driven floating.
 * Weeb workspace numbers
 
