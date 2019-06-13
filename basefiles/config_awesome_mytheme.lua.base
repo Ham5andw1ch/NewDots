@@ -11,7 +11,7 @@ local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
 local theme = {{}}
 
-theme.font          = "dejavu sans 8"
+theme.font          = "Noto Sans 8"
 
 theme.bg_normal     = "{color0}"
 theme.bg_focus      = "{color8}"
@@ -19,8 +19,8 @@ theme.bg_urgent     = "{color1}"
 theme.bg_minimize   = theme.bg_normal
 theme.bg_systray    = theme.bg_normal
 
-theme.titlebar_bg_normal = "{color15}"
-theme.titlebar_fg_normal = "{color0}"
+theme.titlebar_bg_normal = "{color8}"
+theme.titlebar_fg_normal = theme.fg_normal
 theme.titlebar_bg_focus = "{color8}"
 theme.titlebar_fg_focus = theme.fg_normal
 
@@ -86,10 +86,12 @@ theme.menu_width  = dpi(100)
 --theme.bg_widget = "#cc0000"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = config_path.."2x/close_off.png"
+theme.titlebar_close_button_normal = config_path.."2x/close.png"
 theme.titlebar_close_button_focus  = config_path.."2x/close.png"
+theme.titlebar_close_button_focus_hover  = config_path.."2x/close_hover.png"
 
-theme.titlebar_minimize_button_normal = config_path.."2x/minimize_off.png"
+theme.titlebar_minimize_button_normal = config_path.."2x/minimize.png"
+theme.titlebar_minimize_button_focus_hover = config_path.."2x/minimize_hover_2.png"
 theme.titlebar_minimize_button_focus  = config_path.."2x/minimize.png"
 
 theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
@@ -107,10 +109,12 @@ theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/
 theme.titlebar_floating_button_normal_active = themes_path.."default/titlebar/floating_normal_active.png"
 theme.titlebar_floating_button_focus_active  = themes_path.."default/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = config_path.."2x/fullscreen_off.png"
+theme.titlebar_maximized_button_normal_inactive = config_path.."2x/fullscreen.png"
 theme.titlebar_maximized_button_focus_inactive  = config_path.."2x/fullscreen.png"
-theme.titlebar_maximized_button_normal_active =   config_path.."2x/restore_off.png"
+theme.titlebar_maximized_button_focus_inactive_hover  = config_path.."2x/fullscreen_hover_2.png"
+theme.titlebar_maximized_button_normal_active =   config_path.."2x/restore.png"
 theme.titlebar_maximized_button_focus_active  =   config_path.."2x/restore.png"
+theme.titlebar_maximized_button_focus_active_hover  =   config_path.."2x/restore_hover_2.png"
 
 theme.wallpaper = themes_path.."default/background.png"
 
