@@ -780,8 +780,15 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       layout  = wibox.layout.flex.horizontal
                   },
                   { -- Right
-                        nil,
-                        nil,
+                    {
+                      buttons = buttons,
+                      layout = wibox.layout.flex.horizontal
+                    },
+                    {
+                      buttons = buttons,
+                      layout = wibox.layout.flex.horizontal
+                    },
+                  
                         {
                             awful.titlebar.widget.minimizebutton(c),
                             awful.titlebar.widget.maximizedbutton(c),

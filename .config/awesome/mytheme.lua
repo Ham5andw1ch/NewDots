@@ -11,40 +11,40 @@ local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
 local theme = {}
 
-theme.font          = "dejavu sans 8"
+theme.font          = "Noto Sans 8"
 
-theme.bg_normal     = "#271f1c"
-theme.bg_focus      = "#443630"
-theme.bg_urgent     = "#c77647"
+theme.bg_normal     = "#272221"
+theme.bg_focus      = "#423937"
+theme.bg_urgent     = "#7b64ab"
 theme.bg_minimize   = theme.bg_normal
 theme.bg_systray    = theme.bg_normal
 
-theme.titlebar_bg_normal = "#fffefd"
-theme.titlebar_fg_normal = "#271f1c"
-theme.titlebar_bg_focus = "#443630"
+theme.titlebar_bg_normal = "#423937"
+theme.titlebar_fg_normal = theme.fg_normal
+theme.titlebar_bg_focus = "#423937"
 theme.titlebar_fg_focus = theme.fg_normal
 
-theme.fg_normal     = "#fffefd"
-theme.fg_focus      = "#fffefd"
-theme.fg_urgent     = "#fffefd"
-theme.fg_minimize   = "#fffefd"
+theme.fg_normal     = "#fffdfd"
+theme.fg_focus      = "#fffdfd"
+theme.fg_urgent     = "#fffdfd"
+theme.fg_minimize   = "#fffdfd"
 
 theme.useless_gap   = dpi(5)
 theme.border_width  = dpi(1)
-theme.border_normal = "#271f1c"
-theme.border_focus  = "#c9c7c6"
+theme.border_normal = "#272221"
+theme.border_focus  = "#c9c7c7"
 theme.border_marked = "#91231c"
 
 theme.tasklist_bg_minimize     = theme.bg_normal
-theme.tasklist_bg_focus      = "#443630"
+theme.tasklist_bg_focus      = "#423937"
 theme.tasklist_bg_urgent     = "#ff0000"
 theme.tasklist_bg_normal   = theme.bg_normal
 
-theme.tasklist_fg_minimize   = "#fffefd"
-theme.tasklist_fg_focus      = "#fffefd"
-theme.tasklist_fg_urgent     = "#fffefd"
-theme.tasklist_fg_normal     = "#fffefd"
-theme.underline_color        =  "#c77647"
+theme.tasklist_fg_minimize   = "#fffdfd"
+theme.tasklist_fg_focus      = "#fffdfd"
+theme.tasklist_fg_urgent     = "#fffdfd"
+theme.tasklist_fg_normal     = "#fffdfd"
+theme.underline_color        =  "#7b64ab"
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
@@ -86,10 +86,12 @@ theme.menu_width  = dpi(100)
 --theme.bg_widget = "#cc0000"
 
 -- Define the image to load
-theme.titlebar_close_button_normal = config_path.."2x/close_off.png"
+theme.titlebar_close_button_normal = config_path.."2x/close.png"
 theme.titlebar_close_button_focus  = config_path.."2x/close.png"
+theme.titlebar_close_button_focus_hover  = config_path.."2x/close_hover.png"
 
-theme.titlebar_minimize_button_normal = config_path.."2x/minimize_off.png"
+theme.titlebar_minimize_button_normal = config_path.."2x/minimize.png"
+theme.titlebar_minimize_button_focus_hover = config_path.."2x/minimize_hover_2.png"
 theme.titlebar_minimize_button_focus  = config_path.."2x/minimize.png"
 
 theme.titlebar_ontop_button_normal_inactive = themes_path.."default/titlebar/ontop_normal_inactive.png"
@@ -107,10 +109,12 @@ theme.titlebar_floating_button_focus_inactive  = themes_path.."default/titlebar/
 theme.titlebar_floating_button_normal_active = themes_path.."default/titlebar/floating_normal_active.png"
 theme.titlebar_floating_button_focus_active  = themes_path.."default/titlebar/floating_focus_active.png"
 
-theme.titlebar_maximized_button_normal_inactive = config_path.."2x/fullscreen_off.png"
+theme.titlebar_maximized_button_normal_inactive = config_path.."2x/fullscreen.png"
 theme.titlebar_maximized_button_focus_inactive  = config_path.."2x/fullscreen.png"
-theme.titlebar_maximized_button_normal_active =   config_path.."2x/restore_off.png"
+theme.titlebar_maximized_button_focus_inactive_hover  = config_path.."2x/fullscreen_hover_2.png"
+theme.titlebar_maximized_button_normal_active =   config_path.."2x/restore.png"
 theme.titlebar_maximized_button_focus_active  =   config_path.."2x/restore.png"
+theme.titlebar_maximized_button_focus_active_hover  =   config_path.."2x/restore_hover_2.png"
 
 theme.wallpaper = themes_path.."default/background.png"
 
