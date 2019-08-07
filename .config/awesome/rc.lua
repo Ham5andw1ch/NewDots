@@ -95,9 +95,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 { "open terminal", terminal }
                                   }
                               })
-
-                              mylauncher = awful.widget.launcher({ image = "/home/donov/.config/awesome/2x/apps.png",
-                              command = "rofi -show drun -theme material -icon-theme Papirus-Dark" })
+                              mylauncher = awful.widget.launcher({ image = "/home/donov/.config/awesome/2x/arch.png", top = 4,
+                              command = "AdvancedRofi.sh" })
 
                               -- Menubar configuration
                               menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -326,6 +325,12 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                       valign = 'center',
                                       widget = wibox.widget.textbox
                                   }
+                                  mytext = wibox.widget{
+                                      markup = '',
+                                      align  = 'right',
+                                      valign = 'center',
+                                      widget = wibox.widget.textbox
+                                  }
                                   s.space = wibox.widget{
                                       markup = ' ',
                                       align  = 'right',
@@ -338,7 +343,33 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                       valign = 'center',
                                       widget = wibox.widget.textbox
                                   }
+
+                                  s.my_systray = wibox.widget {
+                                      wibox.widget.systray(),
+                                      left   = 2,
+                                      top    = 2,
+                                      bottom = 2,
+                                      right  = 2,
+                                      widget = wibox.container.margin,
+                                  }
                                   -- Create the wibox
+                              --s.mylauncher = wibox.widget({
+                              --    layout ={
+                              --            spacing = 0,
+                              --            layout  = wibox.layout.fixed.horizontal
+                              --  },
+                              --    widget_template = {
+                              --  {
+
+                              --    image = "/home/donov/.config/awesome/2x/arch.png",
+                              --    command = "AdvancedRofi.sh",
+                              --    widget = awful.widget.launcher,
+                              --}
+                              --,
+                              --      top = 30,
+                              --      widget = wibox.container.margin,
+                              --    }
+                              --})
 
                                   s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = 21,position = "bottom"})
 
@@ -361,7 +392,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   s.space,
                                   mytextclock,
                                   s.space,
-                                  wibox.widget.systray(),
+                                  s.my_systray,
                                   s.mylayoutbox,
                                   s.space,
                               },
@@ -448,13 +479,13 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       {description = "reload awesome", group = "awesome"}),
                       awful.key({ modkey, "Shift"   }, "q", function() awful.spawn("powerDMenuTheme.sh") end,
                       {description = "quit awesome", group = "awesome"}),
-                      awful.key({}, "Print", function () awful.spawn("superMaim 3") end,
+                      awful.key({}, "Print", function () awful.spawn("superShot 3") end,
                       {description = "open a terminal", group = "launcher"}),
-                      awful.key({"Shift"}, "Print", function () awful.spawn("superMaim 4") end,
+                      awful.key({"Shift"}, "Print", function () awful.spawn("superShot 4") end,
                       {description = "open a terminal", group = "launcher"}),
-                      awful.key({modkey,}, "Print", function () awful.spawn("superMaim 1") end,
+                      awful.key({modkey,}, "Print", function () awful.spawn("superShot 1") end,
                       {description = "open a terminal", group = "launcher"}),
-                      awful.key({modkey,"Shift"}, "Print", function () awful.spawn("superMaim 2") end,
+                      awful.key({modkey,"Shift"}, "Print", function () awful.spawn("superShot 2") end,
                       {description = "open a terminal", group = "launcher"}),
 
                       awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
@@ -509,9 +540,16 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       {description = "show the menubar", group = "launcher"}),
 
 
-                      awful.key({ modkey }, "t", function () awful.spawn("compton -Fbc -I .1 -O .1 --backend xrender ") end,
+                      awful.key({ modkey }, "t", function () awful.spawn("compton -Fbc -I .1 -O .1 --backend xrender ") awful.spawn("notify-send \"Compton Enabled\"") end,
                       {description = "show the menubar", group = "launcher"}),
-                      awful.key({ modkey,"Shift" }, "t", function () awful.spawn("killall compton") end,
+                      awful.key({ modkey,"Shift" }, "t", function () awful.spawn("killall compton") awful.spawn("notify-send \"Compton Disabled\"")end,
+                      {description = "show the menubar", group = "launcher"}),
+
+                      awful.key({}, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%")  awful.spawn("play /home/donov/.config/awesome/sound/Pop.wav") end,
+                      {description = "show the menubar", group = "launcher"}),
+                      awful.key({}, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%") awful.spawn("play /home/donov/.config/awesome/sound/Pop.wav")end,
+                      {description = "show the menubar", group = "launcher"}),
+                      awful.key({}, "XF86AudioMute", function () awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle") awful.spawn("play /home/donov/.config/awesome/sound/Pop.wav")end,
                       {description = "show the menubar", group = "launcher"})
                       )
 
@@ -678,260 +716,304 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                   }, properties = { titlebars_enabled = true }
               },
 
-              {rule_any = {class = {"dockx",},}, proerties = {titlebars_enabled = false}},
-
-              -- Set Firefox to always map on the tag named "2" on screen 1.
-              -- { rule = { class = "Firefox" },
-              --   properties = { screen = 1, tag = "2" } },
-          }
-          -- }}}
-
-          -- {{{ Signals
-          -- Signal function to execute when a new client appears.
-          client.connect_signal("manage", function (c)
-              -- Set the windows at the slave,
-              -- i.e. put it at the end of others instead of setting it master.
-              if not awesome.startup then awful.client.setslave(c) end
-              if awesome.startup
-                  and not c.size_hints.user_position
-                  and not c.size_hints.program_position then
-                  -- Prevent clients from being unreachable after screen count changes.
-                  awful.placement.no_offscreen(c)
-              end
-          end)
-
-          -- Add a titlebar if titlebars_enabled is set to true in the rules.
---          client.connect_signal("request::titlebars", function(c)
---              -- buttons for the titlebar
---              local buttons = gears.table.join(
---              awful.button({ }, 1, function()
---                  c:emit_signal("request::activate", "titlebar", {raise = true})
---                  awful.mouse.client.move(c)
---              end),
---              awful.button({ }, 3, function()
---                  c:emit_signal("request::activate", "titlebar", {raise = true})
---                  awful.mouse.client.resize(c)
---              end)
---              )
---              c.space = wibox.widget{
---                  markup = '  ',
---                  align  = 'right',
---                  valign = 'center',
---                  widget = wibox.widget.textbox
---              }
---
---              awful.titlebar(c) : setup {
---                  { -- Left
---                  awful.titlebar.widget.iconwidget(c),
---                  c.space,
---                  layout  = wibox.layout.fixed.horizontal
---              },
---        { -- Middle
---              { -- Title
---              align  = "center",
---
---              widget = awful.titlebar.widget.titlewidget(c)
---          },
---          buttons = buttons,
---          layout  = wibox.layout.flex.horizontal
---      },
---    { -- Right
---      awful.titlebar.widget.minimizebutton(c),
---      awful.titlebar.widget.maximizedbutton(c),
---      awful.titlebar.widget.closebutton    (c),
---      layout = wibox.layout.fixed.horizontal()
---    },
---    layout = wibox.layout.align.horizontal
---    }
---end)
-
-
-          client.connect_signal("request::titlebars", function(c)
-              -- buttons for the titlebar
-              local buttons = gears.table.join(
-                awful.button({ }, 1, function()
-                c:emit_signal("request::activate", "titlebar", {raise = true})
-                awful.mouse.client.move(c)
-              end),
-              awful.button({ }, 3, function()
-                  c:emit_signal("request::activate", "titlebar", {raise = true})
-                  awful.mouse.client.resize(c)
-              end)
-              )
-              c.space = wibox.widget{
-                  markup = '  ',
-                  align  = 'right',
-                  valign = 'center',
-                  widget = wibox.widget.textbox
+              { rule = { class = "Plank" },
+              properties = {
+                  titlebars_enabled = false,
+                  border_width = 0,
+                  floating = true,
+                  sticky = true,
+                  ontop = true,
+                  focusable = false,
+                  below = true
               }
+          },
+          {rule_any = {class = {"dockx",},}, proerties = {titlebars_enabled = false}},
 
-              awful.titlebar(c, {size = 20}) : setup {
-                  { -- Left
-                     awful.titlebar.widget.iconwidget(c),
-                     buttons = buttons,
-                     layout  = wibox.layout.fixed.horizontal
-                  },
-                  { -- Middle
-                      { -- Title
-                          align  = 'center',
-                          widget = awful.titlebar.widget.titlewidget(c)
-                      },
-                      buttons = buttons,
-                      layout  = wibox.layout.flex.horizontal
-                  },
-                  { -- Right
-                    {
-                      buttons = buttons,
-                      layout = wibox.layout.flex.horizontal
-                    },
-                    {
-                      buttons = buttons,
-                      layout = wibox.layout.flex.horizontal
-                    },
-                  
-                        {
-                            awful.titlebar.widget.minimizebutton(c),
-                            awful.titlebar.widget.maximizedbutton(c),
-                            awful.titlebar.widget.closebutton    (c),
-                            layout = wibox.layout.fixed.horizontal
-                        },
-                      layout = wibox.layout.align.horizontal
+          -- Set Firefox to always map on the tag named "2" on screen 1.
+          -- { rule = { class = "Firefox" },
+          --   properties = { screen = 1, tag = "2" } },
+      }
+      -- }}}
+
+      -- {{{ Signals
+      -- Signal function to execute when a new client appears.
+      client.connect_signal("manage", function (c)
+          -- Set the windows at the slave,
+          -- i.e. put it at the end of others instead of setting it master.
+          if not awesome.startup then awful.client.setslave(c) end
+          if awesome.startup
+              and not c.size_hints.user_position
+              and not c.size_hints.program_position then
+              -- Prevent clients from being unreachable after screen count changes.
+              awful.placement.no_offscreen(c)
+          end
+      end)
+
+      -- Add a titlebar if titlebars_enabled is set to true in the rules.
+      --          client.connect_signal("request::titlebars", function(c)
+      --              -- buttons for the titlebar
+      --              local buttons = gears.table.join(
+      --              awful.button({ }, 1, function()
+      --                  c:emit_signal("request::activate", "titlebar", {raise = true})
+      --                  awful.mouse.client.move(c)
+      --              end),
+      --              awful.button({ }, 3, function()
+      --                  c:emit_signal("request::activate", "titlebar", {raise = true})
+      --                  awful.mouse.client.resize(c)
+      --              end)
+      --              )
+      --              c.space = wibox.widget{
+      --                  markup = '  ',
+      --                  align  = 'right',
+      --                  valign = 'center',
+      --                  widget = wibox.widget.textbox
+      --              }
+      --
+      --              awful.titlebar(c) : setup {
+      --                  { -- Left
+      --                  awful.titlebar.widget.iconwidget(c),
+      --                  c.space,
+      --                  layout  = wibox.layout.fixed.horizontal
+      --              },
+      --        { -- Middle
+      --              { -- Title
+      --              align  = "center",
+      --
+      --              widget = awful.titlebar.widget.titlewidget(c)
+      --          },
+      --          buttons = buttons,
+      --          layout  = wibox.layout.flex.horizontal
+      --      },
+      --    { -- Right
+      --      awful.titlebar.widget.minimizebutton(c),
+      --      awful.titlebar.widget.maximizedbutton(c),
+      --      awful.titlebar.widget.closebutton    (c),
+      --      layout = wibox.layout.fixed.horizontal()
+      --    },
+      --    layout = wibox.layout.align.horizontal
+      --    }
+      --end)
+
+
+      client.connect_signal("request::titlebars", function(c)
+          -- buttons for the titlebar
+          local buttons = gears.table.join(
+          awful.button({ }, 1, function()
+              c:emit_signal("request::activate", "titlebar", {raise = true})
+              awful.mouse.client.move(c)
+          end),
+          awful.button({ }, 3, function()
+              c:emit_signal("request::activate", "titlebar", {raise = true})
+              awful.mouse.client.resize(c)
+          end)
+          )
+          c.space = wibox.widget{
+              markup = '  ',
+              align  = 'right',
+              valign = 'center',
+              widget = wibox.widget.textbox
+          }
+
+          awful.titlebar(c, {size = 20}) : setup {
+              { -- Left
+              awful.titlebar.widget.iconwidget(c),
+              buttons = buttons,
+              layout  = wibox.layout.fixed.horizontal
+          },
+          { -- Middle
+          { -- Title
+          align  = 'center',
+          widget = awful.titlebar.widget.titlewidget(c)
+      },
+      buttons = buttons,
+      layout  = wibox.layout.flex.horizontal
+  },
+  { -- Right
+  {
+      buttons = buttons,
+      layout = wibox.layout.flex.horizontal
+  },
+  {
+      buttons = buttons,
+      layout = wibox.layout.flex.horizontal
+  },
+
+  {
+      awful.titlebar.widget.minimizebutton(c),
+      awful.titlebar.widget.maximizedbutton(c),
+      awful.titlebar.widget.closebutton    (c),
+      layout = wibox.layout.fixed.horizontal
+  },
+  layout = wibox.layout.align.horizontal
                   },
                   layout = wibox.layout.flex.horizontal
               }
           end)
 
 
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    c:emit_signal("request::activate", "mouse_enter", {raise = false})
-end)
+          -- Enable sloppy focus, so that focus follows mouse.
+          client.connect_signal("mouse::enter", function(c)
+              c:emit_signal("request::activate", "mouse_enter", {raise = false})
+          end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
--- }}}
--- Hide bars when app go fullscreen
-local b = true
+          client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
+          client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+          -- }}}
+          -- Hide bars when app go fullscreen
+          local b = true
 
-function updateBarsVisibility()
-    for s in screen do
-        if s.selected_tag then
-            s.mywibox.visible = not s.selected_tag.fullscreenMode
-        end
-    end
-end
+          function updateBarsVisibility()
+              for s in screen do
+                  if s.selected_tag then
+                      s.mywibox.visible = not s.selected_tag.fullscreenMode
+                  end
+              end
+          end
 
-_G.tag.connect_signal(
-'property::selected',
-function(t)
-    if #t.screen.clients == 0 then
-        t.fullscreenMode = false
-    end
-    updateBarsVisibility()
-end
-)
-_G.client.connect_signal(
-'property::minimized',
-function(c)
-    if #c.screen.clients == 0 then
-        c.first_tag.fullscreenMode = false
-    end
-    updateBarsVisibility()
-end
-)
+          _G.tag.connect_signal(
+          'property::selected',
+          function(t)
+              if #t.screen.clients == 0 then
+                  t.fullscreenMode = false
+              end
+              updateBarsVisibility()
+          end
+          )
+          _G.client.connect_signal(
+          'property::minimized',
+          function(c)
+              if #c.screen.clients == 0 then
+                  c.first_tag.fullscreenMode = false
+              end
+              updateBarsVisibility()
+          end
+          )
+          bannedList = {"plank","dockx","komorebi"}
+          function isException(title)
+              -- awful.spawn("notify-send " .. title)
+              for i,item in pairs(bannedList) do
+                  if item == title then
+                      return true
+                  end
+              end
+              return false
 
-_G.client.connect_signal(
-'property::fullscreen',
-function(c)
-    b = c.fullscreen
-    c.first_tag.fullscreenMode = c.fullscreen
-    updateBarsVisibility()
-end
-)
+          end
+          _G.client.connect_signal(
+          'property::fullscreen',
+          function(c)
+              b = c.fullscreen
+              if c.first_tag ~= nil then
+               c.first_tag.fullscreenMode = c.fullscreen
+            end
+              updateBarsVisibility()
+          end
+          )
 
-_G.client.connect_signal(
-'focus',
-function(c)
-    if c.instance ~= nil then
-        local icon = menubar.utils.lookup_icon(c.instance)
-        local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
-        if icon ~= nil then
-            local new_icon =gears.surface(icon) 
-            c.icon = new_icon._native
-        elseif lower_icon ~= nil then 
-            local new_icon = gears.surface(lower_icon)
-            c.icon = new_icon._native
-        elseif c.icon == nil then
-            local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
-            c.icon = new_icon._native
-        end
-    else
-        local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
-        c.icon = new_icon._native
+          _G.client.connect_signal(
+          'focus',
+          function(c)
+              if c.instance ~= nil then
+                  local icon = menubar.utils.lookup_icon(c.instance)
+                  local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
+                  if icon ~= nil then
+                      local new_icon =gears.surface(icon) 
+                      c.icon = new_icon._native
+                  elseif lower_icon ~= nil then 
+                      local new_icon = gears.surface(lower_icon)
+                      c.icon = new_icon._native
+                  elseif c.icon == nil then
+                      local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+                      c.icon = new_icon._native
+                  end
+              else
+                  local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+                  c.icon = new_icon._native
 
-    end
-    --awful.spawn("notify-send ha")
-    b = c.fullscreen
-    c.first_tag.fullscreenMode = c.fullscreen
-    updateBarsVisibility()
-end
-)
+              end
+              --awful.spawn("notify-send ha")
+              b = c.fullscreen
+              c.first_tag.fullscreenMode = c.fullscreen
+              updateBarsVisibility()
+          end
+          )
 
-_G.client.connect_signal(
-'unmanage',
-function(c)
-    if c.fullscreen then
-        c.screen.selected_tag.fullscreenMode = not c.fullscreen
-        updateBarsVisibility()
-    end
-end
-)
-client.connect_signal("property::floating", function(c)
-    local b = false
-    if c.first_tag ~= nil then
-        b = c.first_tag.layout.name == "floating"
-    end
-    if c.floating or b then
-        awful.titlebar.show(c)
-    else
-        awful.titlebar.hide(c)
-    end
-end)
+          _G.client.connect_signal(
+          'unmanage',
+          function(c)
+              if c.fullscreen then
+                  c.screen.selected_tag.fullscreenMode = not c.fullscreen
+                  updateBarsVisibility()
+              end
+          end
+          )
+          client.connect_signal("property::floating", function(c)
+              local b = false
+              if c.first_tag ~= nil then
+                  b = c.first_tag.layout.name == "floating"
+              end
+              if not isException(c.instance) then
+                  test = isException(c.instance)
+                  -- awful.spawn("notify-send " .. string.format("%s",test))
+                  if c.floating or b then
+                      awful.titlebar.show(c)
+                  else
+                      awful.titlebar.hide(c)
+                  end
+              else
+                  awful.titlebar.hide(c)
+              end
+          end)
+          screen.connect_signal("property::geometry", function(s)
+            awful.spawn("notify-send boi")
+              awful.spawn("/home/donov/.config/wpg/wp_init.sh")
+          end)
 
-tag.connect_signal("property::layout", function(t)
-    local clients = t:clients()
-    for k,c in pairs(clients) do
-        if c.floating or c.first_tag.layout.name == "floating" then
-            awful.titlebar.show(c)
-        else
-            awful.titlebar.hide(c)
-        end
-    end
-end)
-client.connect_signal("manage", function(c)
-    c.size_hints_honor = false
-    if c.instance ~= nil then
-        local icon = menubar.utils.lookup_icon(c.instance)
-        local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
-        if icon ~= nil then
-            local new_icon =gears.surface(icon) 
-            c.icon = new_icon._native
-        elseif lower_icon ~= nil then 
-            local new_icon = gears.surface(lower_icon)
-            c.icon = new_icon._native
-        elseif c.icon == nil then
-            local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
-            c.icon = new_icon._native
-        end
-    else
-        local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
-        c.icon = new_icon._native
+          tag.connect_signal("property::layout", function(t)
+              local clients = t:clients()
+              for k,c in pairs(clients) do
+                  if not isException(c.instance) then
+                      test = isException(c.instance)
+                      --awful.spawn("notify-send " .. string.format("%s",test))
+                      if c.floating or c.first_tag.layout.name == "floating" then
+                          awful.titlebar.show(c)
+                      else
+                          awful.titlebar.hide(c)
+                      end
+                  else
+                      awful.titlebar.hide(c)
+                  end
+              end
+          end)
+          client.connect_signal("manage", function(c)
+              c.size_hints_honor = false
+              if c.instance ~= nil then
+                  local icon = menubar.utils.lookup_icon(c.instance)
+                  local lower_icon = menubar.utils.lookup_icon(c.instance:lower())
+                  if icon ~= nil then
+                      local new_icon =gears.surface(icon) 
+                      c.icon = new_icon._native
+                  elseif lower_icon ~= nil then 
+                      local new_icon = gears.surface(lower_icon)
+                      c.icon = new_icon._native
+                  elseif c.icon == nil then
+                      local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+                      c.icon = new_icon._native
+                  end
+              else
+                  local new_icon = gears.surface(menubar.utils.lookup_icon("application-default-icon"))
+                  c.icon = new_icon._native
 
-    end
-    if c.floating or c.first_tag.layout.name == "floating" then
-        awful.titlebar.show(c)
-    else
-        awful.titlebar.hide(c)
-    end
-end)
-
+              end
+              if not isException(c.instance) then
+                  test = isException(c.instance)
+                  --awful.spawn("notify-send " .. string.format("%s",test))
+                  if c.floating or c.first_tag.layout.name == "floating" then
+                      awful.titlebar.show(c)
+                  else
+                      awful.titlebar.hide(c)
+                  end
+              else
+                  awful.titlebar.hide(c)
+              end
+          end)

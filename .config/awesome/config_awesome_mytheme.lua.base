@@ -9,44 +9,42 @@ local dpi = xresources.apply_dpi
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 local config_path = gfs.get_configuration_dir()
-local theme = {}
+local theme = {{}}
 
-theme.systray_icon_spacing = 2
+theme.font          = "Noto Sans 8"
 
-theme.font          = "Roboto 8.5"
-
-theme.bg_normal     = "#191819"
-theme.bg_focus      = "#323032"
-theme.bg_urgent     = "#e62371"
+theme.bg_normal     = "{color0}"
+theme.bg_focus      = "{color8}"
+theme.bg_urgent     = "{color1}"
 theme.bg_minimize   = theme.bg_normal
 theme.bg_systray    = theme.bg_normal
 
-theme.titlebar_bg_normal = "#323032"
+theme.titlebar_bg_normal = "{color8}"
 theme.titlebar_fg_normal = theme.fg_normal
-theme.titlebar_bg_focus = "#323032"
+theme.titlebar_bg_focus = "{color8}"
 theme.titlebar_fg_focus = theme.fg_normal
 
-theme.fg_normal     = "#ffffff"
-theme.fg_focus      = "#ffffff"
-theme.fg_urgent     = "#ffffff"
-theme.fg_minimize   = "#ffffff"
+theme.fg_normal     = "{color15}"
+theme.fg_focus      = "{color15}"
+theme.fg_urgent     = "{color15}"
+theme.fg_minimize   = "{color15}"
 
 theme.useless_gap   = dpi(5)
 theme.border_width  = dpi(1)
-theme.border_normal = "#191819"
-theme.border_focus  = "#c5c5c5"
+theme.border_normal = "{color0}"
+theme.border_focus  = "{color7}"
 theme.border_marked = "#91231c"
 
 theme.tasklist_bg_minimize     = theme.bg_normal
-theme.tasklist_bg_focus      = "#323032"
+theme.tasklist_bg_focus      = "{color8}"
 theme.tasklist_bg_urgent     = "#ff0000"
 theme.tasklist_bg_normal   = theme.bg_normal
 
-theme.tasklist_fg_minimize   = "#ffffff"
-theme.tasklist_fg_focus      = "#ffffff"
-theme.tasklist_fg_urgent     = "#ffffff"
-theme.tasklist_fg_normal     = "#ffffff"
-theme.underline_color        =  "#e62371"
+theme.tasklist_fg_minimize   = "{color15}"
+theme.tasklist_fg_focus      = "{color15}"
+theme.tasklist_fg_urgent     = "{color15}"
+theme.tasklist_fg_normal     = "{color15}"
+theme.underline_color        =  "{color1}"
 -- There are other variable sets
 -- overriding the default one when
 -- defined, the sets are:
