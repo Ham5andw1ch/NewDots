@@ -11,10 +11,10 @@ configuration {
 }
 
 * {
-	background-color:            #061a27;
-	text-color:                  #f9ffff;
-    selbg:                       #0b3753;
-    active-border:               #579ac7;
+	background-color:            #271f1c;
+	text-color:                  #fffefd;
+    selbg:                       #443630;
+    active-border:               #c77647;
 	
 
 	selected-normal-foreground:  @text-color;
@@ -42,11 +42,6 @@ configuration {
 }
 
 window {
-	location:	 south west;
-	x-offset: 0px;
-    y-offset: -20px;
-	height:		 40%;
-	width:		 230px;
 	margin-right: 60px;
 	orientation: horizontal;
 	children:	 [mainbox];
@@ -55,8 +50,7 @@ window {
 mainbox {
 	spacing:  0em;
 	padding: 0px;
-	width:350px;
-	children: [  sidebar,listview, inputbar];
+	children: [inputbar, listview];
 	expand: true;
 }
 
@@ -93,7 +87,7 @@ entry {
 	text-color:     @selected-normal-foreground;
 	background-color: @normal-background;
 	vertical-align: 1;
-	padding:        16px;
+	padding:        8px;
 	font:            "Roboto medium 8";
 }
 

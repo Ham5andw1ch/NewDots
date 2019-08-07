@@ -11,27 +11,26 @@ configuration {
 }
 
 * {
-	background-color:            #2e3237;
-	text-color:                  #889190;
-	selbg:                       #889190;
-	actbg:                       #2e3237;
-	urgbg:                       #e53935;
-	winbg:			             #dfdfdf;
+	background-color:            #271f1c;
+	text-color:                  #fffefd;
+    selbg:                       #443630;
+    active-border:               #c77647;
+	
 
-	selected-normal-foreground:  @winbg;
+	selected-normal-foreground:  @text-color;
 	normal-foreground:           @text-color;
-	selected-normal-background:  @actbg;
+	selected-normal-background:  @selbg;
 	normal-background:           @background-color;
 
 	selected-urgent-foreground:  @background-color;
 	urgent-foreground:           @text-color;
-	selected-urgent-background:  @urgbg;
-	urgent-background:           @background-color;
+	selected-urgent-background:  @active-border;
+	urgent-background:           @active-border;
 
-	selected-active-foreground:  @winbg;
+	selected-active-foreground:  @text-color;
 	active-foreground:           @text-color;
-	selected-active-background:  @actbg;
-	active-background:           @selbg;
+	selected-active-background:  @selbg;
+	active-background:           @background-color;
 
 	line-margin:                 0;
 	line-padding:                0;
@@ -47,7 +46,7 @@ window {
 	x-offset: 0px;
     y-offset: -20px;
 	height:		 40%;
-	width:		 200px;
+	width:		 230px;
 	margin-right: 60px;
 	orientation: horizontal;
 	children:	 [mainbox];
@@ -56,15 +55,15 @@ window {
 mainbox {
 	spacing:  0em;
 	padding: 0px;
-	width:300px;
-	children: [  sidebar,listview, inputbar];
+	width:350px;
+	children: [  listview, inputbar,sidebar];
 	expand: true;
 }
 
-button { padding: 5px 2px; }
+button { padding: 5px 5px; }
 
 button selected {
-	background-color: @normal-background;
+	background-color: @selected-normal-background;
 	text-color:       @selected-normal-foreground;
 }
 
@@ -94,7 +93,7 @@ entry {
 	text-color:     @selected-normal-foreground;
 	background-color: @normal-background;
 	vertical-align: 1;
-	padding:        12px;
+	padding:        8px;
 	font:            "Roboto medium 8";
 }
 
@@ -106,11 +105,17 @@ element normal.normal {
 element normal.urgent {
 	background-color: @urgent-background;
 	text-color:       @urgent-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	    @urgent-background;
 }
 
 element normal.active {
 	background-color: @active-background;
 	text-color:       @active-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	   @urgent-background;
 }
 
 element selected.normal {
@@ -118,17 +123,23 @@ element selected.normal {
 	text-color:       @selected-normal-foreground;
 	padding: 16px;
 	border:           0 0 0 5px solid;
-	border-color:	    @active-background;
+	border-color:	    @selected-normal-background;
 }
 
 element selected.urgent {
 	background-color: @selected-urgent-background;
 	text-color:       @selected-urgent-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	    @selected-urgent-background;
 }
 
 element selected.active {
 	background-color: @selected-active-background;
 	text-color:       @selected-active-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	    @urgent-background;
 }
 
 element alternate.normal {
@@ -139,9 +150,15 @@ element alternate.normal {
 element alternate.urgent {
 	background-color: @urgent-background;
 	text-color:       @urgent-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	    @urgent-background;
 }
 
 element alternate.active {
 	background-color: @active-background;
 	text-color:       @active-foreground;
+	padding: 16px;
+	border:           0 0 0 5px solid;
+	border-color:	    @urgent-background;
 }

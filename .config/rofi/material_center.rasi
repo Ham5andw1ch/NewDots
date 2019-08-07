@@ -11,10 +11,10 @@ configuration {
 }
 
 * {
-	background-color:            #271f1c;
-	text-color:                  #fffefd;
-    selbg:                       #443630;
-    active-border:               #c77647;
+	background-color:            #191819;
+	text-color:                  #ffffff;
+    selbg:                       #323032;
+    active-border:               #e62371;
 	
 
 	selected-normal-foreground:  @text-color;
