@@ -1,0 +1,27 @@
+#!/bin/bash
+
+case $1 in
+    "1")	
+        shotgun ~/screenshots/$(date +%s).png
+        notify-send "Saved \"~/screenshots/$(date +%s).png\"."
+        ;;
+    "2")
+        set -e
+        sel=$(slop -f "-i %i -g %g")
+        shotgun ~/screenshots/$(date +%s).png $sel
+        notify-send "Saved selection to \"~/screenshots/$(date +%s).png\"."
+        ;;
+    "3")
+        shotgun /tmp/scrot
+        notify-send "Saving Lul"
+        sleep 1
+        xclip -selection clipboard -target image/png /tmp/scrot
+        notify-send "Saved to clipboard."
+        ;;
+    "4")
+        set -e
+        sel=$(slop -f "-i %i -g %g")
+        shotgun - $sel   | xclip -selection clipboard -target image/png 
+        notify-send "Saved selection to clipboard."
+        ;;
+esac
