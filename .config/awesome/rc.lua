@@ -95,8 +95,15 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 { "open terminal", terminal }
                                   }
                               })
-                              mylauncher = awful.widget.launcher({ image = "/home/donov/.config/awesome/2x/arch.png", top = 4,
-                              command = "AdvancedRofi.sh" })
+                              mylauncher = wibox.widget {
+                                  awful.widget.launcher({ image = "/home/donov/.config/awesome/2x/arch.png", top = 4,
+                              command = "AdvancedRofi.sh" }),
+                              left = 2,
+                              top = 2,
+                              bottom = 2,
+                              right = 2,
+                              widget = wibox.container.margin,
+                          }
 
                               -- Menubar configuration
                               menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -163,26 +170,39 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 
                               -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
                               screen.connect_signal("property::geometry", set_wallpaper)
-
                               awful.screen.connect_for_each_screen(function(s)
 
                                   -- Each screen has its own tag table.
-                                  awful.tag({ " 一 ", " 二 ", " 三 ", " 四 ", " 五 ", " 六 "}, s, awful.layout.layouts[1])
+                                  awful.tag({ " 一 ", " 二 ", " 三 ", " 四 ", " 五 ", " 六 ", "7"}, s, awful.layout.layouts[1])
 
                                   -- Create a promptbox for each screen
                                   s.mypromptbox = awful.widget.prompt()
                                   -- Create an imagebox widget which will contain an icon indicating which layout we're using.
                                   -- We need one layoutbox per screen.
-                                  s.mylayoutbox = awful.widget.layoutbox(s)
+                                  s.mylayoutbox = wibox.widget{
+                                      awful.widget.layoutbox(s),
+                                      left = 2,
+                                      top = 2,
+                                      bottom = 2,
+                                      right = 2,
+                                      widget = wibox.container.margin,
+                                  }
                                   s.mylayoutbox:buttons(gears.table.join(
                                   awful.button({ }, 1, function () awful.layout.inc( 1) end),
                                   awful.button({ }, 3, function () awful.layout.inc(-1) end),
                                   awful.button({ }, 4, function () awful.layout.inc( 1) end),
                                   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
                                   -- Create a taglist widget
+                              function noscratch(t)
+                                 if t.name == "7" then
+                                     return false
+                                 else
+                                     return true
+                                 end
+                              end
                                   s.mytaglist = awful.widget.taglist {
                                       screen  = s,
-                                      filter  = awful.widget.taglist.filter.all,
+                                      filter  = noscratch,
                                       --layout = {
                                       --        spacing = 5,
                                       --        layout = wibox.layout.fixed.horizontal
@@ -227,14 +247,17 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                                                   widget = wibox.widget.imagebox,
 
                                                               },
-                                                              margins = 2,
+                                                              left = 4,
+                                                              right = 4,
+                                                              top = 4,
+                                                              bottom = 4,
                                                               widget  = wibox.container.margin,
                                                           },
                                                           {
                                                               id = 'text_role',
                                                               widget = wibox.widget.textbox,
                                                           },
-                                                          forced_height = 19,
+                                                          forced_height = 22,
                                                           layout = wibox.layout.fixed.horizontal,
                                                       },
                                                       right = 2,
@@ -352,6 +375,14 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                       right  = 2,
                                       widget = wibox.container.margin,
                                   }
+                                  s.my_layoutbox = wibox.widget {
+                                      wibox.widget.systray(),
+                                      left   = 2,
+                                      top    = 2,
+                                      bottom = 2,
+                                      right  = 2,
+                                      widget = wibox.container.margin,
+                                  }
                                   -- Create the wibox
                               --s.mylauncher = wibox.widget({
                               --    layout ={
@@ -371,7 +402,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                               --    }
                               --})
 
-                                  s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = 21,position = "bottom"})
+                                  s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = 24,position = "bottom"})
 
 
                                   -- Add widgets to the wibox
@@ -409,7 +440,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 
                       -- {{{ Key bindings
                       globalkeys = gears.table.join(
-                      awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+                      awful.key({ modkey,   "Shift"}, "s", function () awful.spawn("xrandr --output DP-0 --pos 0x0 --mode 1920x1080 --rate 144 --primary --output HDMI-0 --off") end,
+                      {description="show help", group="awesome"}),
+                      awful.key({ modkey,           }, "s", function() awful.spawn("xrandr --output DP-0 --pos 0x0 --mode 1920x1080 --rate 144 --primary --output HDMI-0 --pos 1920x0 --mode 1920x1080") end,
                       {description="show help", group="awesome"}),
                       awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
                       {description = "view previous", group = "tag"}),
@@ -538,6 +571,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       -- Menubar
                       awful.key({ modkey }, "p", function () awful.spawn("rofi -show run -theme material") end,
                       {description = "show the menubar", group = "launcher"}),
+                      
+                      awful.key({ modkey, "Shift" }, "p", function ()   awful.spawn("rofi -show drun -icon-theme Papirus-Dark -theme material") end,
+                      {description = "show the menubar", group = "launcher"}),
 
 
                       awful.key({ modkey }, "t", function () awful.spawn("compton -Fbc -I .1 -O .1 --backend xrender ") awful.spawn("notify-send \"Compton Enabled\"") end,
@@ -607,7 +643,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                           function ()
                               local screen = awful.screen.focused()
                               local tag = screen.tags[i]
-                              if tag then
+                              if tag and tag.name ~= "7"then
                                   tag:view_only()
                               end
                           end,
@@ -617,7 +653,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                           function ()
                               local screen = awful.screen.focused()
                               local tag = screen.tags[i]
-                              if tag then
+                              if tag and tag.name ~= "7" then
                                   awful.tag.viewtoggle(tag)
                               end
                           end,
@@ -627,7 +663,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                           function ()
                               if client.focus then
                                   local tag = client.focus.screen.tags[i]
-                                  if tag then
+                                  if tag and tag.name ~= "7" then
                                       client.focus:move_to_tag(tag)
                                   end
                               end
@@ -638,7 +674,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                           function ()
                               if client.focus then
                                   local tag = client.focus.screen.tags[i]
-                                  if tag then
+                                  if tag and tag.name ~= "7" then
                                       client.focus:toggle_tag(tag)
                                   end
                               end
@@ -715,6 +751,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       { rule_any = {type = { "normal", "dialog" }
                   }, properties = { titlebars_enabled = true }
               },
+                  { rule = { class = "Xfdesktop" },
+                    properties = { sticky = true, border_width = 0, screen = 1, tag = "7",} },
 
               { rule = { class = "Plank" },
               properties = {
@@ -727,7 +765,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                   below = true
               }
           },
-          {rule_any = {class = {"dockx",},}, proerties = {titlebars_enabled = false}},
 
           -- Set Firefox to always map on the tag named "2" on screen 1.
           -- { rule = { class = "Firefox" },
@@ -816,9 +853,13 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
 
           awful.titlebar(c, {size = 20}) : setup {
               { -- Left
+              {
               awful.titlebar.widget.iconwidget(c),
               buttons = buttons,
               layout  = wibox.layout.fixed.horizontal
+              },
+              margins = 1,
+              widget = wibox.container.margin,
           },
           { -- Middle
           { -- Title
@@ -855,6 +896,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
           client.connect_signal("mouse::enter", function(c)
               c:emit_signal("request::activate", "mouse_enter", {raise = false})
           end)
+          bannedList = {"plank","dockx","komorebi","xfdesktop"}
 
           client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
           client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
@@ -888,7 +930,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
               updateBarsVisibility()
           end
           )
-          bannedList = {"plank","dockx","komorebi"}
           function isException(title)
               -- awful.spawn("notify-send " .. title)
               for i,item in pairs(bannedList) do
@@ -965,7 +1006,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
               end
           end)
           screen.connect_signal("property::geometry", function(s)
-            awful.spawn("notify-send boi")
               awful.spawn("/home/donov/.config/wpg/wp_init.sh")
           end)
 

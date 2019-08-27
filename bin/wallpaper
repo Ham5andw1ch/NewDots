@@ -1,0 +1,6 @@
+#!/bin/bash
+feh --bg-fill /home/donov/.config/wpg/wallpapers/"$(wpg -c)"
+xfconf-query    --channel xfce4-desktop   --property /backdrop/screen0/monitorDP-0/workspace0/last-image   --set /home/donov/.config/wpg/wallpapers/"$(wpg -c)"
+xfconf-query    --channel xfce4-desktop   --property /backdrop/screen0/monitorHDMI-0/workspace0/last-image   --set /home/donov/.config/wpg/wallpapers/"$(wpg -c)"
+
+echo 'awesome.restart()' | awesome-client
