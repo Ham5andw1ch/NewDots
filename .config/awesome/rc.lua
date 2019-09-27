@@ -97,13 +97,13 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                               })
                               mylauncher = wibox.widget {
                                   awful.widget.launcher({ image = "/home/donov/.config/awesome/2x/arch.png", top = 4,
-                              command = "AdvancedRofi.sh" }),
-                              left = 2,
-                              top = 2,
-                              bottom = 2,
-                              right = 2,
-                              widget = wibox.container.margin,
-                          }
+                                  command = "AdvancedRofi.sh" }),
+                                  left = 2,
+                                  top = 2,
+                                  bottom = 2,
+                                  right = 2,
+                                  widget = wibox.container.margin,
+                              }
 
                               -- Menubar configuration
                               menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -129,9 +129,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   if client.focus then
                                       client.focus:toggle_tag(t)
                                   end
-                              end),
-                              awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
-                              awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
+                              end)
+                              --awful.button({ }, 4, function(t) awful.tag.viewnext(t.screen) end),
+                              --awful.button({ }, 5, function(t) awful.tag.viewprev(t.screen) end)
                               )
 
                               local tasklist_buttons = gears.table.join(
@@ -193,13 +193,13 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   awful.button({ }, 4, function () awful.layout.inc( 1) end),
                                   awful.button({ }, 5, function () awful.layout.inc(-1) end)))
                                   -- Create a taglist widget
-                              function noscratch(t)
-                                 if t.name == "7" then
-                                     return false
-                                 else
-                                     return true
-                                 end
-                              end
+                                  function noscratch(t)
+                                      if t.name == "7" then
+                                          return false
+                                      else
+                                          return true
+                                      end
+                                  end
                                   s.mytaglist = awful.widget.taglist {
                                       screen  = s,
                                       filter  = noscratch,
@@ -383,24 +383,38 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                       right  = 2,
                                       widget = wibox.container.margin,
                                   }
-                                  -- Create the wibox
-                              --s.mylauncher = wibox.widget({
-                              --    layout ={
-                              --            spacing = 0,
-                              --            layout  = wibox.layout.fixed.horizontal
-                              --  },
-                              --    widget_template = {
-                              --  {
 
-                              --    image = "/home/donov/.config/awesome/2x/arch.png",
-                              --    command = "AdvancedRofi.sh",
-                              --    widget = awful.widget.launcher,
-                              --}
-                              --,
-                              --      top = 30,
-                              --      widget = wibox.container.margin,
-                              --    }
-                              --})
+                                  local cbuttons = gears.table.join(
+                                  awful.button({ }, 1, function()
+                                      local screen1 = awful.screen.focused()
+                                      screen1.closing = true
+                                      local num = #screen1.clients
+                                      for i,item in pairs(screen1.clients) do
+                                          if item.class == "Xfdesktop" then
+                                              num = num -1
+                                          end
+                                      end
+                                      if num > 0 then
+                                          for k,c in pairs(screen1.clients) do
+                                              if c.class ~= "Xfdesktop" then
+                                                  c.minimized = true
+                                              end
+                                          end
+                                      else
+                                          if screen1.client_memory ~= nil then
+                                              for k,c in pairs(screen1.client_memory) do
+                                                  c.minimized = false
+                                              end
+                                          end
+                                      end
+                                      screen1.closing = false
+
+                                  end)
+                                  )
+                                  s.my_button = wibox.widget {
+                                      forced_width =5,
+                                      buttons = cbuttons;
+                                  }
 
                                   s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = 24,position = "bottom"})
 
@@ -425,17 +439,18 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   s.space,
                                   s.my_systray,
                                   s.mylayoutbox,
-                                  s.space,
+                                  s.my_button
+
                               },
                           }
                       end)
                       -- }}}
 
                       -- {{{ Mouse bindings
-                      root.buttons(gears.table.join(
-                      awful.button({ }, 4, awful.tag.viewnext),
-                      awful.button({ }, 5, awful.tag.viewprev)
-                      ))
+                      --root.buttons(gears.table.join(
+                      --//awful.button({ }, 4, awful.tag.viewnext),
+                      --awful.button({ }, 5, awful.tag.viewprev)
+                      --))
                       -- }}}
 
                       -- {{{ Key bindings
@@ -537,9 +552,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       {description = "increase the number of columns", group = "layout"}),
                       awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
                       {description = "decrease the number of columns", group = "layout"}),
-                      awful.key({ modkey,           }, "space", function () awful.layout.inc( 1)                end,
-                      {description = "select next", group = "layout"}),
                       awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
+                      {description = "select previous", group = "layout"}),
+                      awful.key({ modkey, }, "space", function () awful.layout.inc(1)                end,
                       {description = "select previous", group = "layout"}),
 
                       awful.key({ modkey, "Control" }, "n",
@@ -571,7 +586,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       -- Menubar
                       awful.key({ modkey }, "p", function () awful.spawn("rofi -show run -theme material") end,
                       {description = "show the menubar", group = "launcher"}),
-                      
+
                       awful.key({ modkey, "Shift" }, "p", function ()   awful.spawn("rofi -show drun -icon-theme Papirus-Dark -theme material") end,
                       {description = "show the menubar", group = "launcher"}),
 
@@ -751,8 +766,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                       { rule_any = {type = { "normal", "dialog" }
                   }, properties = { titlebars_enabled = true }
               },
-                  { rule = { class = "Xfdesktop" },
-                    properties = { sticky = true, border_width = 0, screen = 1, tag = "7",} },
+              { rule = { class = "Xfdesktop" },
+              properties = { sticky = true, border_width = 0, screen = 1, tag = "7",} },
 
               { rule = { class = "Plank" },
               properties = {
@@ -799,8 +814,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
       --                  awful.mouse.client.resize(c)
       --              end)
       --              )
-      --              c.space = wibox.widget{
-      --                  markup = '  ',
       --                  align  = 'right',
       --                  valign = 'center',
       --                  widget = wibox.widget.textbox
@@ -837,10 +850,28 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
           local buttons = gears.table.join(
           awful.button({ }, 1, function()
               c:emit_signal("request::activate", "titlebar", {raise = true})
+              if c.maximized then
+                  oldWidth = c.width
+                  oldHeight = c.height
+                  c.maximized = false;
+                  c.x = c.screen.geometry.x
+                  c.y = c.screen.geometry.y
+                  c.width = oldWidth
+                  c.height = oldHeight
+              end
               awful.mouse.client.move(c)
           end),
           awful.button({ }, 3, function()
               c:emit_signal("request::activate", "titlebar", {raise = true})
+              if c.maximized then
+                  oldWidth = c.width
+                  oldHeight = c.height
+                  c.maximized = false;
+                  c.x = c.screen.geometry.x
+                  c.y = c.screen.geometry.y
+                  c.width = oldWidth
+                  c.height = oldHeight
+              end
               awful.mouse.client.resize(c)
           end)
           )
@@ -854,9 +885,9 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
           awful.titlebar(c, {size = 20}) : setup {
               { -- Left
               {
-              awful.titlebar.widget.iconwidget(c),
-              buttons = buttons,
-              layout  = wibox.layout.fixed.horizontal
+                  awful.titlebar.widget.iconwidget(c),
+                  buttons = buttons,
+                  layout  = wibox.layout.fixed.horizontal
               },
               margins = 1,
               widget = wibox.container.margin,
@@ -907,6 +938,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
           function updateBarsVisibility()
               for s in screen do
                   if s.selected_tag then
+
+                      --            awful.spawn("notify-send " .. s.selected_tag.layout.name)
                       s.mywibox.visible = not s.selected_tag.fullscreenMode
                   end
               end
@@ -921,6 +954,19 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
               updateBarsVisibility()
           end
           )
+
+          --tag.connect_signal("property::layout", function(t)
+          --      local full = false
+          --      for k,c in pairs(t:clients()) do
+          --           if(c.focus and c.fullscreen) then
+          --               full = true
+          --           end
+          --      end
+          --      t.fullscreenMode = t.layout.name == "fullscreen" and full
+          --      updateBarsVisibility()
+          --  end)
+
+
           _G.client.connect_signal(
           'property::minimized',
           function(c)
@@ -945,8 +991,8 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
           function(c)
               b = c.fullscreen
               if c.first_tag ~= nil then
-               c.first_tag.fullscreenMode = c.fullscreen
-            end
+                  c.first_tag.fullscreenMode = c.fullscreen or c.screen.selected_tag.layout.name == "fullscreen"
+              end
               updateBarsVisibility()
           end
           )
@@ -974,7 +1020,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
               end
               --awful.spawn("notify-send ha")
               b = c.fullscreen
-              c.first_tag.fullscreenMode = c.fullscreen
+              c.first_tag.fullscreenMode = c.fullscreen or c.screen.selected_tag.layout.name == "fullscreen"
               updateBarsVisibility()
           end
           )
@@ -1025,6 +1071,68 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                   end
               end
           end)
+
+          --
+          -- Show Desktop Code
+          --
+          function table.shallow_copy(t)
+              local t2 = {}
+              for k,v in pairs(t) do
+                  t2[k] = v
+              end
+              return t2
+          end
+
+          screen.connect_signal("tag::history::update", function(s)
+              if s.closing ~= true then
+                  if s.clients ~= nil then
+                      if s.lul == nil then
+                          s.lul = false
+                      end
+                      s.lul = not s.lul
+                      local tags = s.clients
+                      local num = #s.clients
+                      for k,d in pairs(tags) do
+                          if d.class == "Xfdesktop" then
+                              num = num -1
+                          end
+                      end
+                      if num > 0 then
+                          s.client_memory = table.shallow_copy(s.clients)
+                      end
+                  end
+              end
+          end)
+
+          function clientStuff(c)
+              if c.screen.closing ~= true then
+                  local tags = c.screen.clients
+                  local num = #c.screen.clients
+                  for k,d in pairs(tags) do
+                      if d.class == "Xfdesktop" then
+                          num = num -1
+                      end
+                  end
+                  if num > 0 then
+                      c.screen.client_memory = table.shallow_copy(c.screen.clients)
+                  end
+              end
+          end
+          client.connect_signal("property::minimized", function(c)
+              clientStuff(c)
+          end)
+          client.connect_signal("unmanage", function(c)
+              clientStuff(c)
+          end)
+          client.connect_signal("manage", function(c)
+              clientStuff(c)
+          end)
+
+
+          --
+          -- Icon Code
+          --
+
           client.connect_signal("manage", function(c)
               c.size_hints_honor = false
               if c.instance ~= nil then
