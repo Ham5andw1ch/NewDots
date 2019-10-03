@@ -257,7 +257,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                                               id = 'text_role',
                                                               widget = wibox.widget.textbox,
                                                           },
-                                                          forced_height = 22,
+                                                          forced_height = beautiful.barHeight -2,
                                                           layout = wibox.layout.fixed.horizontal,
                                                       },
                                                       right = 2,
@@ -416,7 +416,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                       buttons = cbuttons;
                                   }
 
-                                  s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = 24,position = "bottom"})
+                                  s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = beautiful.barHeight,position = "bottom"})
 
 
                                   -- Add widgets to the wibox
