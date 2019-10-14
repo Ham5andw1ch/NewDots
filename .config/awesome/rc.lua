@@ -444,7 +444,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   b.value = 1
                                   b.opacity = 1
 
-<<<<<<< HEAD
 
                               end)
 
@@ -459,7 +458,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                               s.mywibox:setup {
                                   layout = wibox.layout.align.horizontal,
                                   { -- Left widgets
-=======
                                   s.mywibox= awful.wibar({type ="dock", ontop = true, screen = s,height = beautiful.barHeight,position = "bottom"})
 
 
@@ -475,7 +473,6 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                   },
                                   s.mytasklist,
                                   { -- Right widgets
->>>>>>> 01feb15fb97742357c12ef03404c6c9ad099d23a
                                   layout = wibox.layout.fixed.horizontal,
                                   s.space,
                                   mylauncher,

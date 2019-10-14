@@ -12,6 +12,7 @@ local config_path = gfs.get_configuration_dir()
 local theme = {{}}
 theme.systray_icon_spacing = 4
 
+theme.barHeight = 22
 theme.font          = "Roboto Condensed 8.5"
 
 theme.bg_normal     = "{color0}"
